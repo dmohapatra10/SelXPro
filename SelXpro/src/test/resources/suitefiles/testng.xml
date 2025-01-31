@@ -1,0 +1,45 @@
+<suite name="Suite">
+    <listeners>
+        <listener class-name="extentUtil.TestListener"/>
+        <listener class-name="utils.CustomAnnotationTransformer"/>
+    </listeners>
+    <parameter name="browser" value="chrome"/>
+    <test name="GroupTests">
+        <method-selectors>
+            <method-selector>
+                <script language="beanshell">
+                    <![CDATA[
+                    String includeGroups = System.getProperty("includeGroupNames", "");
+                    String excludeGroups = System.getProperty("excludeGroupNames", "");
+
+                    String[] includeGroupArray = includeGroups.isEmpty() ? new String[0] : includeGroups.split(",");
+                    String[] excludeGroupArray = excludeGroups.isEmpty() ? new String[0] : excludeGroups.split(",");
+
+                    if (includeGroupArray.length > 0) {
+                        for (String group : includeGroupArray) {
+                            if (groups.containsKey(group.trim())) {
+                                for (String excludeGroup : excludeGroupArray) {
+                                    if (groups.containsKey(excludeGroup.trim())) {
+                                        return false;
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                    for (String excludeGroup : excludeGroupArray) {
+                        if (groups.containsKey(excludeGroup.trim())) {
+                            return false;
+                        }
+                    }
+                    return true;
+                ]]>
+                </script>
+            </method-selector>
+        </method-selectors>
+        <packages>
+            <package name="scripts.*"/>
+        </packages>
+    </test>
+</suite>
