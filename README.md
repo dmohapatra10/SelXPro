@@ -10,14 +10,15 @@ This is a Selenium-based automation framework designed using the Page Object Mod
 |-- src/test/java
 |   |-- basepack
 |   |   |-- BaseTest.java  # Handles browser setup and teardown
+|   |   |-- BasePage.java  # Handles all page specific common methods
 |   |   |-- I.java         # Wrapper class for Selenium actions
-|   |-- pages
+|   |-- pageobjects
 |   |   |-- LoginPage.java  # Example Page Object Class (Only locators)
 |   |   |-- HomePage.java   # Example Page Object Class (Only locators)
-|   |-- tests
+|   |-- scripts
 |   |   |-- LoginTest.java  # Example Test Class
-|-- utils
-|-- extentUtil
+|   |-- extentUtils      # Extent reports configuration classes
+|   |-- utils            # Common utility classes
 |-- testng.xml
 |-- build.gradle
 |-- gradlew.bat
