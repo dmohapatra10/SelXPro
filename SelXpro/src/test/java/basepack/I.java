@@ -21,13 +21,11 @@ import java.util.List;
 public class I {
 
     private WebDriver driver;
+    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-    public I(WebDriver driver)
-    {
-        this.driver=driver;
+    public I(WebDriver driver) {
+        this.driver = driver;
     }
-
-    private WebDriverWait wait=new WebDriverWait(driver,Duration.ofSeconds(10));
 
     public WebElement waitUntilClickable(WebElement locator) {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
@@ -46,119 +44,114 @@ public class I {
     }
 
     public WebElement scrollTo(WebElement locator, String locatorName) {
-        logStep("I scroll to "+locatorName);
+        logStep("I scroll to " + formattedLocatorName(locatorName));
         waitUntilElementIsVisible(locator);
-        JavascriptExecutor js=(JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView(true);",locator);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", locator);
         return locator;
     }
+
     public WebElement click(WebElement locator, String locatorName) {
-        logStep("I click the "+locatorName);
+        logStep("I click the " + formattedLocatorName(locatorName));
         waitUntilClickable(locator).click();
         return locator;
     }
 
     public WebElement sendKeys(WebElement locator, String text, String locatorName) {
-        logStep("I type "+text+ " into the text box "+locatorName);
+        logStep("I type " + text + " into the text box " + formattedLocatorName(locatorName));
         waitUntilElementIsVisible(locator).sendKeys(text, locatorName);
         return locator;
     }
 
-    public void selectOptionByText(WebElement dropdownLocator, String option, String locatorName)
-    {
-        logStep("I select the option "+option+" from the dropdown "+locatorName);
+    public void selectOptionByText(WebElement dropdownLocator, String option, String locatorName) {
+        logStep("I select the option " + option + " from the dropdown " + formattedLocatorName(locatorName));
         waitUntilElementIsVisible(dropdownLocator);
-        Select select=new Select(dropdownLocator);
+        Select select = new Select(dropdownLocator);
         select.selectByVisibleText(option);
     }
-    public void selectOptionByIndex(WebElement dropdownLocator, int index, String locatorName)
-    {
-        logStep("I select the option at index "+index+" from the dropdown "+locatorName);
+
+    public void selectOptionByIndex(WebElement dropdownLocator, int index, String locatorName) {
+        logStep("I select the option at index " + index + " from the dropdown " + formattedLocatorName(locatorName));
         waitUntilElementIsVisible(dropdownLocator);
-        Select select=new Select(dropdownLocator);
+        Select select = new Select(dropdownLocator);
         select.selectByIndex(index);
     }
 
-    public void selectOptionByValue(WebElement dropdownLocator, String value, String locatorName)
-    {
-        logStep("I select the option with value "+value+" from the dropdown "+locatorName);
+    public void selectOptionByValue(WebElement dropdownLocator, String value, String locatorName) {
+        logStep("I select the option with value " + value + " from the dropdown " + formattedLocatorName(locatorName));
         waitUntilElementIsVisible(dropdownLocator);
-        Select select=new Select(dropdownLocator);
+        Select select = new Select(dropdownLocator);
         select.selectByValue(value);
     }
 
-    public List<WebElement> getAllDropDownOptions(WebElement dropdownLocator, String dropdownLocatorName)
-    {
-        logStep("I get all the options from dropdown "+dropdownLocatorName);
+    public List<WebElement> getAllDropDownOptions(WebElement dropdownLocator, String dropdownLocatorName) {
+        logStep("I get all the options from dropdown " + formattedLocatorName(dropdownLocatorName));
         waitUntilElementIsVisible(dropdownLocator);
-        Select select=new Select(dropdownLocator);
+        Select select = new Select(dropdownLocator);
         return select.getOptions();
     }
 
-    public List<WebElement> getAllSelectedDropDownOptions(WebElement dropdownLocator, String dropdownLocatorName)
-    {
-        logStep("I get all the selected options from the dropdown "+dropdownLocatorName);
+    public List<WebElement> getAllSelectedDropDownOptions(WebElement dropdownLocator, String dropdownLocatorName) {
+        logStep("I get all the selected options from the dropdown " + formattedLocatorName(dropdownLocatorName));
         waitUntilElementIsVisible(dropdownLocator);
-        Select select=new Select(dropdownLocator);
+        Select select = new Select(dropdownLocator);
         return select.getAllSelectedOptions();
     }
 
-    public WebElement dragAndDrop(WebElement source, WebElement destination, String elementName)
-    {
-        logStep("I drag and drop "+elementName);
+    public WebElement dragAndDrop(WebElement source, WebElement destination, String elementName) {
+        logStep("I drag and drop " + formattedLocatorName(elementName));
         waitUntilElementIsVisible(source);
-        Actions actions=new Actions(driver);
-        actions.dragAndDrop(source,destination);
+        Actions actions = new Actions(driver);
+        actions.dragAndDrop(source, destination);
         return destination;
     }
 
-    public WebElement moveMouseTo(WebElement locator, String elementName)
-    {
-        logStep("I mouse move to "+elementName);
-        Actions actions=new Actions(driver);
+    public WebElement moveMouseTo(WebElement locator, String elementName) {
+        logStep("I mouse move to " + formattedLocatorName(elementName));
+        Actions actions = new Actions(driver);
         waitUntilElementIsVisible(locator);
         actions.moveToElement(locator);
         return locator;
     }
 
-    public WebElement keyPress(WebElement locator, Keys key, String elementName)
-    {
-        logStep("I key press at "+elementName);
-        Actions actions=new Actions(driver);
+    public WebElement keyPress(WebElement locator, Keys key, String elementName) {
+        logStep("I key press at " + formattedLocatorName(elementName));
+        Actions actions = new Actions(driver);
         waitUntilElementIsVisible(locator);
-        actions.sendKeys(locator,key).perform();
+        actions.sendKeys(locator, key).perform();
         return locator;
     }
 
-    public <T> T visit(String url, final Class<T> pageClass)
-    {
-        logStep("I navigated to "+url);
+    public <T> T visit(String url, final Class<T> pageClass) {
+        logStep("I navigated to " + formattedLocatorName(url));
         driver.get(url);
-        return PageFactory.initElements(driver,pageClass);
+        return PageFactory.initElements(driver, pageClass);
     }
 
-    public <T> T navigateTo(String endPoint, final Class<T> pageClass)
-    {
-        String baseUrl=PropertyManager.getApplicationData("baseURL");
-        String url=baseUrl+endPoint;
+    public <T> T navigateTo(String endPoint, final Class<T> pageClass) {
+        String baseUrl = PropertyManager.getApplicationData("baseURL");
+        String url = baseUrl + endPoint;
         driver.navigate().to(url);
-        return PageFactory.initElements(driver,pageClass);
-    }
-    public <T> T navigatedTo(String endPoint, final Class<T> pageClass)
-    {
-        Assert.assertTrue(driver.getCurrentUrl().contains(endPoint),"End Point entered is incorrect");
-        return PageFactory.initElements(driver,pageClass);
+        return PageFactory.initElements(driver, pageClass);
     }
 
-    public void verifyElementIsDisplayed(WebElement element, String elementName)
-    {
-        logStep("the element "+elementName+ " should be displayed");
+    public <T> T navigatedTo(String endPoint, final Class<T> pageClass) {
+        Assert.assertTrue(driver.getCurrentUrl().contains(endPoint), "End Point entered is incorrect");
+        return PageFactory.initElements(driver, pageClass);
+    }
+
+    public void verifyElementIsDisplayed(WebElement element, String elementName) {
+        logStep("the element " + formattedLocatorName(elementName) + " should be displayed");
         waitUntilElementIsVisible(element);
         Assert.assertTrue(element.isDisplayed());
     }
 
-    public void logStep(String logMessage)
-    {
-        ExtentTestManager.getTest().log(Status.INFO,logMessage);
+    public void logStep(String logMessage) {
+        ExtentTestManager.getTest().log(Status.INFO, logMessage);
     }
+
+    private String formattedLocatorName(String locatorName) {
+        return "<b><font color=green>" + locatorName + "</b></font>";
+    }
+
 }

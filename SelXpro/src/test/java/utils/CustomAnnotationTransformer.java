@@ -1,6 +1,7 @@
 package utils;
 
 import utils.group_annotations.Bug;
+import utils.group_annotations.Summary;
 import utils.group_annotations.Regression;
 import utils.group_annotations.Smoke;
 
@@ -20,6 +21,11 @@ public class CustomAnnotationTransformer implements IAnnotationTransformer {
                 annotation.setGroups(new String[]{"regression"});
             } else if (testMethod.isAnnotationPresent(Bug.class)) {
                 annotation.setGroups(new String[]{"bug"});
+            } else if (testMethod.isAnnotationPresent(Summary.class)) {
+                Summary desc = testMethod.getAnnotation(Summary.class);
+                if (desc != null) {
+                    annotation.setDescription(desc.value());
+                }
             }
         }
     }
