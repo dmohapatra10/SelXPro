@@ -23,10 +23,14 @@ jobs:
           distribution: 'temurin'  
           java-version: '17'  
 
-      - name: Install ChromeDriver
-      - uses: browser-actions/setup-chrome@v1
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
         with:
-         chrome-version: 120
+          chrome-version: 'latest'  # Prefer 'latest' unless specific version needed
+
+      - name: Install ChromeDriver
+        uses: nanasess/setup-chromedriver@master
+        # ChromeDriver version will auto-match Chrome if not specified
 
       - name: Grant execute permission to Gradle Wrapper  
         run: chmod +x SelXpro/gradlew  
@@ -39,7 +43,7 @@ jobs:
       - name: Run Tests  
         run: |  
           cd SelXpro  
-          ./gradlew.bat clean --info test -PincludeGroupNames="smoke" -PexcludeGroupNames="bug"
+          ./gradlew clean test -PincludeGroupNames="smoke" -PexcludeGroupNames="bug"
 
       - name: Archive Test Reports  
         uses: actions/upload-artifact@v4  
