@@ -46,7 +46,7 @@ jobs:
       - name: Compile with Gradle  
         run: |  
           cd SelXpro  
-          ./gradlew compile  
+          ./gradlew compileJava  
 
       - name: Run Tests  
         run: |  
