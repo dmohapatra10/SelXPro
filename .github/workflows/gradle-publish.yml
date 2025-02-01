@@ -34,19 +34,11 @@ jobs:
           echo "Chrome version: $CHROME_VERSION"
           echo "CHROME_VERSION=$CHROME_VERSION" >> $GITHUB_ENV
 
-      - name: Install ChromeDriver  
-        run: |  
-          DRIVER_VERSION=$(curl -sSL "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")  
-          echo "ChromeDriver version: $DRIVER_VERSION"
-          curl -O "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver  
-
-      - name: Verify Chrome & ChromeDriver Versions  
-        run: |  
-          google-chrome --version  
-          chromedriver --version  
+      - name: Install Chrome Driver
+        uses: browser-actions/setup-chrome@v1
+        with:
+         chrome-version: 120
+         install-chromedriver: true
 
       - name: Grant execute permission to Gradle Wrapper  
         run: chmod +x SelXpro/gradlew  
