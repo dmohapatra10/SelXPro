@@ -23,6 +23,25 @@ jobs:
           distribution: 'temurin'  
           java-version: '17'  
 
+      - name: Install Chrome  
+        run: |  
+          sudo apt update  
+          sudo apt install -y google-chrome-stable  
+
+      - name: Install ChromeDriver  
+        run: |  
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d. -f1)  
+          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")  
+          curl -O "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"  
+          unzip chromedriver_linux64.zip  
+          sudo mv chromedriver /usr/local/bin/  
+          sudo chmod +x /usr/local/bin/chromedriver  
+
+      - name: Verify Chrome & ChromeDriver Versions  
+        run: |  
+          google-chrome --version  
+          chromedriver --version  
+
       - name: Grant execute permission to Gradle Wrapper  
         run: chmod +x SelXpro/gradlew  
 
