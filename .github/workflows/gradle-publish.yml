@@ -25,7 +25,8 @@ jobs:
 
       - name: Install ChromeDriver
       - uses: browser-actions/setup-chrome@v1
-      - run: chrome --version
+        with:
+         chrome-version: 120
 
       - name: Grant execute permission to Gradle Wrapper  
         run: chmod +x SelXpro/gradlew  
