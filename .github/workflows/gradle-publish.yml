@@ -24,7 +24,17 @@ jobs:
           java-version: '17'  
 
       - name: Build with Gradle  
-        run: ./gradlew build  
+        run: |  
+          cd SelXpro  
+          ./gradlew build  
 
       - name: Run Tests  
-        run: ./gradlew.bat clean --info test -PincludeGroupNames="smoke" -PexcludeGroupNames="bug"
+        run: |  
+          cd SelXpro  
+          ./gradlew clean --info test -PincludeGroupNames="smoke" -PexcludeGroupNames="bug"
+
+      - name: Archive Test Reports  
+        uses: actions/upload-artifact@v4  
+        with:  
+          name: test-report  
+          path: SelXpro/Reports/
