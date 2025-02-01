@@ -43,10 +43,10 @@ jobs:
       - name: Grant execute permission to Gradle Wrapper  
         run: chmod +x SelXpro/gradlew  
 
-      - name: Build with Gradle  
+      - name: Compile with Gradle  
         run: |  
           cd SelXpro  
-          ./gradlew build  
+          ./gradlew compile  
 
       - name: Run Tests  
         run: |  
