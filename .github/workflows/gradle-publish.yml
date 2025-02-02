@@ -26,11 +26,7 @@ jobs:
       - name: Install Chrome
         uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: 'latest'  # Prefer 'latest' unless specific version needed
-
-      - name: Install ChromeDriver
-        uses: nanasess/setup-chromedriver@master
-        # ChromeDriver version will auto-match Chrome if not specified
+          chrome-version: 'latest'
 
       - name: Grant execute permission to Gradle Wrapper  
         run: chmod +x SelXpro/gradlew  
