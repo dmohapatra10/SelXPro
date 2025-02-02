@@ -38,8 +38,12 @@ public class TestListener implements ITestListener {
         String methodName = result.getMethod().getMethodName();
         Method method = result.getMethod().getConstructorOrMethod().getMethod();
         Summary summary = method.getAnnotation(Summary.class);
-        String summaryValue = "<h4><font color=green>" + summary.value() + "</h4></font>";
-        ExtentTestManager.startTest(methodName, summaryValue);
+        if (summary != null) {
+            String summaryValue = "<h4><font color=green>" + summary.value() + "</h4></font>";
+            ExtentTestManager.startTest(methodName, summaryValue);
+        } else {
+            ExtentTestManager.startTest(methodName, "Test Summary:");
+        }
     }
 
     public void onTestSuccess(ITestResult result) {
