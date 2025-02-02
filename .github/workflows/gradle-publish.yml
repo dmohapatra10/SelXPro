@@ -23,18 +23,10 @@ jobs:
           distribution: 'temurin'  
           java-version: '17'  
 
-      - name: Install Chrome and ChromeDriver
+      - name: Install Chrome
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: 'latest'
-          check-stable: true
-          chromedriver: true
-
-      - name: Verify Chrome Installation
-        run: |
-          which google-chrome
-          google-chrome --version
-          chromedriver --version
 
       - name: Grant execute permission to Gradle Wrapper  
         run: chmod +x SelXpro/gradlew  
