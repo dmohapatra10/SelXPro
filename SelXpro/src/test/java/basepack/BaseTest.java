@@ -3,10 +3,13 @@ package basepack;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import utils.PropertyManager;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
@@ -19,6 +22,7 @@ public class BaseTest {
     private static final ThreadLocal<WebDriver> drivers = new ThreadLocal<>();
     public static String baseURL = PropertyManager.getApplicationData("baseURL");
     protected I I;
+    private String environment = System.getProperty("env");
 
     public WebDriver getWebDriver() {
         return drivers.get();
@@ -59,10 +63,25 @@ public class BaseTest {
     private WebDriver createDriverInstance(String browser) {
         switch (browser.toLowerCase()) {
             case "chrome":
-                WebDriverManager.chromedriver().clearDriverCache().setup();
-                WebDriverManager.chromedriver().clearResolutionCache().setup();
-                WebDriverManager.chromedriver().setup();
-                return new ChromeDriver();
+                if (environment.equalsIgnoreCase("ci")) {
+                    DesiredCapabilities cap = new DesiredCapabilities();
+                    ChromeOptions cp = new ChromeOptions();
+                    cp.addArguments("--headless");
+                    cp.addArguments("--disable-gpu");
+                    cp.addArguments("--no-sandbox");
+                    cap.setCapability(ChromeOptions.CAPABILITY, cp);
+                    cp.merge(cap);
+
+                    WebDriverManager.chromedriver().clearDriverCache().setup();
+                    WebDriverManager.chromedriver().clearResolutionCache().setup();
+                    WebDriverManager.chromedriver().setup();
+                    return new ChromeDriver(cp);
+                } else {
+                    WebDriverManager.chromedriver().clearDriverCache().setup();
+                    WebDriverManager.chromedriver().clearResolutionCache().setup();
+                    WebDriverManager.chromedriver().setup();
+                    return new ChromeDriver();
+                }
             case "firefox":
                 WebDriverManager.firefoxdriver().setup();
                 return new FirefoxDriver();

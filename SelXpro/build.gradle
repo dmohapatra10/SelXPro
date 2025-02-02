@@ -54,6 +54,13 @@ test {
         } else {
             systemProperty 'excludeGroupNames', ""
         }
+
+        if(project.hasProperty('env'))
+        {
+            systemProperty 'env', project.getProperty('env')
+        }else {
+            systemProperty 'env',"local"
+        }
     }
 
     // Optional: Enable verbose logging for debugging
