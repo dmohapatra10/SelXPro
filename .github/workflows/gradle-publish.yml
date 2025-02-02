@@ -39,7 +39,7 @@ jobs:
       - name: Run Tests  
         run: |  
           cd SelXpro  
-          ./gradlew clean test -PincludeGroupNames="smoke" -PexcludeGroupNames="bug"
+          ./gradlew clean test -PincludeGroupNames="smoke" -PexcludeGroupNames="bug" -Penv=ci
 
       - name: Archive Test Reports  
         uses: actions/upload-artifact@v4  
